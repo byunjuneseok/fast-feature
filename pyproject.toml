@@ -1,14 +1,14 @@
 [project]
 name = "fast-feature"
 version = "0.1.0"
-description = "A lightweight, async, OpenFeature-compatible (OFREP) feature flag server with a flagd-grade targeting engine and pluggable storage."
+description = "A lightweight, async, OpenFeature-compatible (OFREP) feature flag server with a JsonLogic targeting engine and pluggable storage."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
 authors = [
     { name = "byunjuneseok", email = "byunjuneseok@gmail.com" },
 ]
-keywords = ["feature-flags", "openfeature", "ofrep", "flagd", "fastapi", "async"]
+keywords = ["feature-flags", "openfeature", "ofrep", "json-logic", "fastapi", "async"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: FastAPI",
@@ -25,6 +25,7 @@ classifiers = [
 dependencies = [
     "fastapi>=0.110",
     "pydantic>=2.6",
+    "mmh3>=4.0",
 ]
 
 [project.urls]
@@ -48,7 +49,7 @@ admin = [
     "jinja2>=3.1",
     "python-multipart>=0.0.9",
 ]
-# A ready-to-run standalone ASGI server (flagd-style daemon).
+# A ready-to-run standalone ASGI server.
 standalone = [
     "uvicorn[standard]>=0.27",
 ]
@@ -92,3 +93,7 @@ select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
 python_version = "3.10"
 strict = true
 packages = ["fast_feature"]
+
+[[tool.mypy.overrides]]
+module = ["mmh3"]
+ignore_missing_imports = true

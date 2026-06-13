@@ -6,8 +6,8 @@
 
 A lightweight, **async**, [OpenFeature](https://openfeature.dev)-compatible
 ([OFREP](https://openfeature.dev/docs/reference/other-technologies/ofrep/))
-feature flag server with a **flagd-grade targeting engine** and **pluggable
-storage** — packaged as a library you mount into your own FastAPI app.
+feature flag server with a **powerful JsonLogic targeting engine** and
+**pluggable storage** — packaged as a library you mount into your own FastAPI app.
 
 > ⚠️ **Status: early development.** APIs are not yet stable.
 
@@ -15,8 +15,8 @@ storage** — packaged as a library you mount into your own FastAPI app.
 
 - **OpenFeature-native.** Speaks the OpenFeature Remote Evaluation Protocol, so
   any OFREP provider can talk to it.
-- **flagd-grade targeting.** Variants, default variant, and JsonLogic targeting
-  rules (including `fractional`, `sem_ver`, `starts_with`/`ends_with`).
+- **Rich targeting.** Variants, a default variant, and JsonLogic targeting rules
+  — including `fractional` rollouts, `sem_ver`, and `starts_with`/`ends_with`.
 - **Library, not just a daemon.** Routers are the unit of composition — attach
   evaluation and admin routers to your existing FastAPI service:
 
