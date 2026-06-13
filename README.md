@@ -1,5 +1,9 @@
 # fast-feature
 
+[![CI](https://github.com/byunjuneseok/fast-feature/actions/workflows/ci.yml/badge.svg)](https://github.com/byunjuneseok/fast-feature/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12%20|%203.13-blue?logo=python&logoColor=white)](https://github.com/byunjuneseok/fast-feature)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./LICENSE)
+
 A lightweight, **async**, [OpenFeature](https://openfeature.dev)-compatible
 ([OFREP](https://openfeature.dev/docs/reference/other-technologies/ofrep/))
 feature flag server with a **flagd-grade targeting engine** and **pluggable
