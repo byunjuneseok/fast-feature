@@ -1,0 +1,35 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Test / tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# AI assistant artifacts — never commit these
+AGENTS.md
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+.omc/
+.cursor/
+.cursorrules
+.aider*
+.windsurf/
+.github/copilot-instructions.md
+*.local.md
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

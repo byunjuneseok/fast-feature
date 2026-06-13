@@ -1,0 +1,94 @@
+[project]
+name = "fast-feature"
+version = "0.1.0"
+description = "A lightweight, async, OpenFeature-compatible (OFREP) feature flag server with a flagd-grade targeting engine and pluggable storage."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "byunjuneseok", email = "byunjuneseok@gmail.com" },
+]
+keywords = ["feature-flags", "openfeature", "ofrep", "flagd", "fastapi", "async"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: FastAPI",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fastapi>=0.110",
+    "pydantic>=2.6",
+]
+
+[project.urls]
+Homepage = "https://github.com/byunjuneseok/fast-feature"
+Repository = "https://github.com/byunjuneseok/fast-feature"
+Issues = "https://github.com/byunjuneseok/fast-feature/issues"
+
+[project.optional-dependencies]
+# Storage backends — each is a self-contained repository implementation.
+inmemory = []
+postgresql = [
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.29",
+]
+mysql = [
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncmy>=0.2.9",
+]
+# The pluggable admin console (JSON CRUD + server-rendered web UI).
+admin = [
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+]
+# A ready-to-run standalone ASGI server (flagd-style daemon).
+standalone = [
+    "uvicorn[standard]>=0.27",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.27",
+    "aiosqlite>=0.20",
+    "ruff>=0.5",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+fast-feature = "fast_feature.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.17,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+# Ship the admin console's templates and static assets as package data.
+source-include = [
+    "src/fast_feature/admin/templates/**",
+    "src/fast_feature/admin/static/**",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+packages = ["fast_feature"]
