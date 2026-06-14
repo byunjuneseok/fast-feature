@@ -101,6 +101,12 @@ uv run ruff check . && uv run mypy && uv run pytest
 
 Tests need no live database — the SQLAlchemy backend runs on `aiosqlite`.
 
+## Contributing
+
+We use [GitHub Flow](./CONTRIBUTING.md): branch off `main`, open a pull request,
+and squash-merge once CI is green. See [CONTRIBUTING.md](./CONTRIBUTING.md) for
+branch naming, commit conventions, and the local workflow.
+
 ## License
 
 [Apache-2.0](./LICENSE)
