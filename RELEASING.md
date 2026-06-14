@@ -2,37 +2,23 @@
 
 All nine distributions are released **in lockstep**: they always share one version
 and are published together. Releases go to PyPI automatically when a version tag
-is pushed, authenticated with [PyPI Trusted Publishing](https://docs.pypi.org/trusted-publishers/)
-(OIDC, no tokens or secrets).
+is pushed, authenticated with a PyPI API token.
 
 ## One-time setup
 
-Trusted Publishing must be configured once per PyPI project. Because the packages
-do not exist on PyPI yet, register each as a **pending publisher** at
-<https://pypi.org/manage/account/publishing/> with these values:
+1. Create an **account-scoped** API token at
+   <https://pypi.org/manage/account/token/>. (Account scope is required because
+   the projects do not exist on PyPI yet; you can rotate to project-scoped tokens,
+   or switch to Trusted Publishing, after the first release.)
 
-| Field | Value |
-| --- | --- |
-| Owner | `byunjuneseok` |
-| Repository name | `fast-feature` |
-| Workflow name | `release.yml` |
-| Environment name | `pypi` |
+2. Store it as a secret named `PYPI_API_TOKEN` in the `pypi` GitHub Environment:
 
-Create one pending publisher for **each** PyPI project name:
+   ```bash
+   gh secret set PYPI_API_TOKEN --env pypi --repo byunjuneseok/fast-feature
+   ```
 
-- `fast-feature`
-- `fast-feature-core`
-- `fast-feature-engine`
-- `fast-feature-ofrep`
-- `fast-feature-testing`
-- `fast-feature-storage-inmemory`
-- `fast-feature-storage-sqlalchemy`
-- `fast-feature-storage-postgresql`
-- `fast-feature-admin`
-
-Then create a GitHub Environment named `pypi`
-(Settings → Environments → New environment). Optionally add protection rules
-(e.g. required reviewers) to gate publishing.
+   (The `pypi` environment already exists; optionally add protection rules such as
+   required reviewers to gate publishing.)
 
 ## Cutting a release
 
@@ -64,4 +50,4 @@ set in the packages.
 - Versions are **immutable on PyPI**: a published version cannot be replaced. Bump
   the version for any re-release.
 - To rehearse against TestPyPI, add `--publish-url https://test.pypi.org/legacy/`
-  to the publish step (and configure pending publishers on TestPyPI).
+  to the publish step and use a TestPyPI token.

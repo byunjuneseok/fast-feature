@@ -3,6 +3,7 @@ name: Release
 # Publishes every workspace distribution to PyPI when a version tag is pushed.
 # Versions are managed in lockstep (see scripts/set_version.py); the tag must
 # match the version already set in the packages, e.g. tag v0.0.1 for version 0.0.1.
+# Auth: PyPI API token in the `PYPI_API_TOKEN` secret (environment `pypi`).
 on:
   push:
     tags: ["v*"]
@@ -28,8 +29,6 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     environment: pypi
-    permissions:
-      id-token: write          # required for PyPI trusted publishing (OIDC)
     strategy:
       fail-fast: false
       matrix:
@@ -51,4 +50,6 @@ jobs:
       - name: Build ${{ matrix.package }}
         run: uv build --package ${{ matrix.package }}
       - name: Publish ${{ matrix.package }} to PyPI
-        run: uv publish --trusted-publishing always
+        run: uv publish
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
