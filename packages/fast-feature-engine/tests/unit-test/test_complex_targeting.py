@@ -66,7 +66,7 @@ class TestTieredRollout:
         assert seen == {"on", "off"}  # both buckets are reachable
 
     def test_fractional_branch_is_deterministic_per_key(self) -> None:
-        context = {"plan": "free", "beta": True, "targetingKey": "stable-user"}
+        context: dict[str, Any] = {"plan": "free", "beta": True, "targetingKey": "stable-user"}
         first = engine.evaluate(self._flag(), context).variant
         assert engine.evaluate(self._flag(), context).variant == first
 
@@ -155,8 +155,9 @@ class TestArrayMembership:
             ([], "limited"),
         ],
     )
-    def test_role_membership(self, roles: list[str], expected: str) -> None:
-        assert engine.evaluate(self._flag(), {"roles": roles}).variant == expected
+    def test_role_membership(self, roles: list[Any], expected: str) -> None:
+        context: dict[str, Any] = {"roles": roles}
+        assert engine.evaluate(self._flag(), context).variant == expected
 
 
 class TestNumericBands:
