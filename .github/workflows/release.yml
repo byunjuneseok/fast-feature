@@ -7,6 +7,7 @@ name: Release
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:        # allow manual re-runs (e.g. to retry rate-limited uploads)
 
 jobs:
   test:
@@ -53,11 +54,18 @@ jobs:
             fast-feature-testing
             fast-feature
           )
+          failed=()
           for pkg in "${packages[@]}"; do
             echo "::group::publish $pkg"
             rm -rf dist
             uv build --package "$pkg"
-            uv publish --check-url https://pypi.org/simple/ dist/*
+            if ! uv publish --check-url https://pypi.org/simple/ dist/*; then
+              failed+=("$pkg")
+            fi
             echo "::endgroup::"
             sleep 15
           done
+          if [ ${#failed[@]} -ne 0 ]; then
+            echo "::error::Failed to publish: ${failed[*]}"
+            exit 1
+          fi
