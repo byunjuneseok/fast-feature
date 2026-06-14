@@ -18,19 +18,19 @@ distribution is independently installable and depends only on what it needs.
                 └──────────── fast-feature-core ───┘   (pure domain)
 ```
 
-- **`fast-feature-core`** — the pure domain: `Flag`/`FlagState`, `EvaluationOutcome`,
+- **`fast-feature-core`**: the pure domain: `Flag`/`FlagState`, `EvaluationOutcome`,
   `Reason`/`ErrorCode`, the `FlagRepository` contract, and the exception hierarchy.
   No framework or storage imports.
-- **`fast-feature-engine`** — a JsonLogic evaluator (`Operator` strategies behind an
+- **`fast-feature-engine`**: a JsonLogic evaluator (`Operator` strategies behind an
   `OperatorRegistry`) plus the targeting operators (`fractional`, `sem_ver`,
   `starts_with`/`ends_with`) and `TargetingEngine`. Depends only on core.
-- **storage backends** — implement core's `FlagRepository`. `inmemory` (no deps);
+- **storage backends**: implement core's `FlagRepository`. `inmemory` (no deps);
   `sqlalchemy` (async ORM, shared base); `postgresql` (asyncpg wiring). All pass the
   shared `FlagRepositoryContract` from `fast-feature-testing`.
-- **`fast-feature-ofrep`** — the OFREP HTTP layer. `OfrepRouter.build(repo)` returns a
+- **`fast-feature-ofrep`**: the OFREP HTTP layer. `OfrepRouter.build(repo)` returns a
   pluggable `APIRouter`; `EvaluationService` orchestrates repository + engine.
-- **`fast-feature-admin`** — JSON CRUD + a server-rendered console. `AdminRouter.build(repo)`.
-- **`fast-feature`** — composition root: `Application.create(settings)` selects a backend
+- **`fast-feature-admin`**: JSON CRUD + a server-rendered console. `AdminRouter.build(repo)`.
+- **`fast-feature`**: composition root: `Application.create(settings)` selects a backend
   and mounts the routers; the `serve` CLI runs it under uvicorn.
 
 ## Conventions

@@ -16,7 +16,7 @@ wheels/
 .coverage
 htmlcov/
 
-# AI assistant artifacts — never commit these
+# AI assistant artifacts (never commit these)
 AGENTS.md
 CLAUDE.md
 CLAUDE.local.md
