@@ -1,0 +1,64 @@
+[project]
+name = "fast-feature"
+version = "0.1.0"
+description = "A lightweight, async, OpenFeature-compatible (OFREP) feature flag server."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "byunjuneseok", email = "byunjuneseok@gmail.com" },
+]
+keywords = ["feature-flags", "openfeature", "ofrep", "json-logic", "fastapi", "async"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: FastAPI",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fast-feature-core",
+    "fast-feature-engine",
+    "fast-feature-ofrep",
+    "fast-feature-storage-inmemory",
+    "pydantic-settings>=2.0",
+]
+
+[project.optional-dependencies]
+postgresql = ["fast-feature-storage-postgresql"]
+admin = ["fast-feature-admin"]
+standalone = ["uvicorn[standard]>=0.27"]
+all = [
+    "fast-feature-storage-postgresql",
+    "fast-feature-admin",
+    "uvicorn[standard]>=0.27",
+]
+
+[project.scripts]
+fast-feature = "fast_feature.server.cli:Cli.run"
+
+[project.urls]
+Homepage = "https://github.com/byunjuneseok/fast-feature"
+Repository = "https://github.com/byunjuneseok/fast-feature"
+Issues = "https://github.com/byunjuneseok/fast-feature/issues"
+
+[build-system]
+requires = ["uv_build>=0.11.17,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "fast_feature.server"
+
+[tool.uv.sources]
+fast-feature-core = { workspace = true }
+fast-feature-engine = { workspace = true }
+fast-feature-ofrep = { workspace = true }
+fast-feature-storage-inmemory = { workspace = true }
+fast-feature-storage-postgresql = { workspace = true }
+fast-feature-admin = { workspace = true }
