@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from fast_feature.domain import Flag, FlagState, InvalidFlagError
+from fast_feature.core import Flag, FlagState, InvalidFlagError
 
 
 def _flag(**overrides: object) -> Flag:

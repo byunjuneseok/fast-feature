@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from fast_feature.domain.evaluation import ErrorCode, Reason
-from fast_feature.domain.flag import Flag, FlagState
-from fast_feature.targeting.engine import TargetingEngine
+from fast_feature.core.evaluation import ErrorCode, Reason
+from fast_feature.core.flag import Flag, FlagState
+from fast_feature.engine.engine import TargetingEngine
 
 engine = TargetingEngine()
 

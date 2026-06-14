@@ -4,7 +4,7 @@ from typing import Any
 
 import pytest
 
-from fast_feature.targeting.jsonlogic import JsonLogic, JsonLogicError
+from fast_feature.engine.jsonlogic import JsonLogic, JsonLogicError
 
 jl = JsonLogic()
 

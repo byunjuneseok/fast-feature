@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fast_feature.domain import ErrorCode, EvaluationOutcome, Reason
+from fast_feature.core import ErrorCode, EvaluationOutcome, Reason
 
 
 class TestEvaluationOutcome:

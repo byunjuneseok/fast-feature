@@ -26,9 +26,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
 
-      - name: Sync (core + extras + dev)
-        # mysql extra is intentionally excluded — it is declared but not yet implemented.
-        run: uv sync --extra inmemory --extra postgresql --extra admin --extra standalone
+      - name: Sync workspace
+        run: uv sync
 
       - name: Lint (ruff)
         run: uv run ruff check .

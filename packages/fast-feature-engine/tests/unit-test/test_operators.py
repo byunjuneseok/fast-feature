@@ -5,8 +5,8 @@ from typing import Any
 
 import pytest
 
-from fast_feature.targeting.jsonlogic import JsonLogic
-from fast_feature.targeting.operators import TARGETING_LAZY_OPS, TARGETING_SIMPLE_OPS
+from fast_feature.engine.jsonlogic import JsonLogic
+from fast_feature.engine.operators import TARGETING_LAZY_OPS, TARGETING_SIMPLE_OPS
 
 jl = JsonLogic(simple_ops=TARGETING_SIMPLE_OPS, lazy_ops=TARGETING_LAZY_OPS)
 

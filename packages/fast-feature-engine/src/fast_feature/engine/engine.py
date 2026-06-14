@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from ..domain.evaluation import ErrorCode, EvaluationOutcome, Reason
-from ..domain.flag import Flag, FlagState
-from ..domain.types import EvaluationContext, JsonValue
+from fast_feature.core.evaluation import ErrorCode, EvaluationOutcome, Reason
+from fast_feature.core.flag import Flag, FlagState
+from fast_feature.core.types import EvaluationContext, JsonValue
+
 from .jsonlogic import JsonLogic, JsonLogicError
 from .operators import TARGETING_LAZY_OPS, TARGETING_SIMPLE_OPS
 
