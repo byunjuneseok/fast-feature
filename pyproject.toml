@@ -1,57 +1,12 @@
-[project]
-name = "fast-feature"
-version = "0.1.0"
-description = "A lightweight, async, OpenFeature-compatible (OFREP) feature flag server with a flagd-grade targeting engine and pluggable storage."
-readme = "README.md"
-license = "Apache-2.0"
-requires-python = ">=3.10"
-authors = [
-    { name = "byunjuneseok", email = "byunjuneseok@gmail.com" },
-]
-keywords = ["feature-flags", "openfeature", "ofrep", "flagd", "fastapi", "async"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Framework :: FastAPI",
-    "Framework :: AsyncIO",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
-    "Typing :: Typed",
-]
-dependencies = [
-    "fastapi>=0.110",
-    "pydantic>=2.6",
-]
+# Virtual workspace root for the fast-feature monorepo.
+# Each distribution lives under packages/*; this root is not itself published.
 
-[project.urls]
-Homepage = "https://github.com/byunjuneseok/fast-feature"
-Repository = "https://github.com/byunjuneseok/fast-feature"
-Issues = "https://github.com/byunjuneseok/fast-feature/issues"
+[tool.uv.workspace]
+members = ["packages/*"]
 
-[project.optional-dependencies]
-# Storage backends — each is a self-contained repository implementation.
-inmemory = []
-postgresql = [
-    "sqlalchemy[asyncio]>=2.0",
-    "asyncpg>=0.29",
-]
-mysql = [
-    "sqlalchemy[asyncio]>=2.0",
-    "asyncmy>=0.2.9",
-]
-# The pluggable admin console (JSON CRUD + server-rendered web UI).
-admin = [
-    "jinja2>=3.1",
-    "python-multipart>=0.0.9",
-]
-# A ready-to-run standalone ASGI server (flagd-style daemon).
-standalone = [
-    "uvicorn[standard]>=0.27",
-]
+[tool.uv.sources]
+fast-feature-core = { workspace = true }
+fast-feature-engine = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -61,34 +16,64 @@ dev = [
     "aiosqlite>=0.20",
     "ruff>=0.5",
     "mypy>=1.10",
-]
-
-[project.scripts]
-fast-feature = "fast_feature.cli:main"
-
-[build-system]
-requires = ["uv_build>=0.11.17,<0.12.0"]
-build-backend = "uv_build"
-
-[tool.uv.build-backend]
-# Ship the admin console's templates and static assets as package data.
-source-include = [
-    "src/fast_feature/admin/templates/**",
-    "src/fast_feature/admin/static/**",
+    "pytest-cov>=5.0",
+    # Workspace members, installed editable for local dev and tooling.
+    "fast-feature-core",
+    "fast-feature-engine",
 ]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = ["tests"]
+addopts = "--cov --cov-report=term-missing"
+testpaths = [
+    "packages/fast-feature-core/tests",
+    "packages/fast-feature-engine/tests",
+]
+
+[tool.coverage.run]
+source_pkgs = ["fast_feature"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@(abc\\.)?abstractmethod",
+    "\\.\\.\\.",
+]
 
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+src = [
+    "packages/fast-feature-core/src",
+    "packages/fast-feature-engine/src",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["fast_feature"]
+
 [tool.mypy]
 python_version = "3.10"
 strict = true
-packages = ["fast_feature"]
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = [
+    "packages/fast-feature-core/src",
+    "packages/fast-feature-engine/src",
+]
+files = [
+    "packages/fast-feature-core/src",
+    "packages/fast-feature-engine/src",
+    "packages/fast-feature-core/tests",
+    "packages/fast-feature-engine/tests",
+]
+
+[[tool.mypy.overrides]]
+module = ["mmh3"]
+ignore_missing_imports = true

@@ -18,7 +18,7 @@ class FlagState(str, Enum):
 
 @dataclass
 class Flag:
-    """A feature flag, modelled after the flagd flag definition.
+    """A feature flag with named variants and an optional targeting rule.
 
     A flag holds a set of named ``variants`` and resolves to exactly one of
     them. Resolution is governed by an optional ``targeting`` rule (JsonLogic);

@@ -1,0 +1,143 @@
+from __future__ import annotations
+
+from typing import Any
+
+import pytest
+
+from fast_feature.engine import (
+    JsonLogicEvaluator,
+    OperatorRegistry,
+    SimpleOperator,
+    StandardOperators,
+)
+from fast_feature.engine.errors import JsonLogicError
+
+
+class TestJsonLogicEvaluator:
+    evaluator = JsonLogicEvaluator(OperatorRegistry(StandardOperators.mapping()))
+
+    @pytest.mark.parametrize(
+        ("rule", "data", "expected"),
+        [
+            # literals
+            (1, {}, 1),
+            ("x", {}, "x"),
+            ({"a": 1, "b": 2}, {}, {"a": 1, "b": 2}),  # multi-key dict is data, not an op
+            # var
+            ({"var": "a"}, {"a": 5}, 5),
+            ({"var": "a.b"}, {"a": {"b": 7}}, 7),
+            ({"var": ["missing", "fallback"]}, {}, "fallback"),
+            ({"var": ""}, {"a": 1}, {"a": 1}),
+            # missing / missing_some
+            ({"missing": ["a", "b"]}, {"a": 1}, ["b"]),
+            ({"missing_some": [1, ["a", "b"]]}, {"a": 1}, []),
+            ({"missing_some": [2, ["a", "b"]]}, {"a": 1}, ["b"]),
+            # logic
+            ({"if": [True, "yes", "no"]}, {}, "yes"),
+            ({"if": [False, "yes", "no"]}, {}, "no"),
+            ({"if": [False, "a", False, "b", "c"]}, {}, "c"),
+            ({"and": [True, 3]}, {}, 3),
+            ({"and": [False, 3]}, {}, False),
+            ({"or": [0, "", "fallback"]}, {}, "fallback"),
+            ({"!": [True]}, {}, False),
+            ({"!!": [""]}, {}, False),
+            # comparison
+            ({"==": [1, "1"]}, {}, True),
+            ({"===": [1, "1"]}, {}, False),
+            ({"!=": [1, 2]}, {}, True),
+            ({"<": [1, 2, 3]}, {}, True),
+            ({"<": [1, 5, 3]}, {}, False),
+            ({">": [3, 2]}, {}, True),
+            ({">=": [3, 3]}, {}, True),
+            # arithmetic
+            ({"+": [1, 2, 3]}, {}, 6),
+            ({"-": [5, 2]}, {}, 3),
+            ({"-": [5]}, {}, -5),
+            ({"*": [2, 3, 4]}, {}, 24),
+            ({"/": [10, 4]}, {}, 2.5),
+            ({"%": [10, 3]}, {}, 1),
+            ({"min": [3, 1, 2]}, {}, 1),
+            ({"max": [3, 1, 2]}, {}, 3),
+            # strings / arrays
+            ({"cat": ["a", "b", 1]}, {}, "ab1"),
+            ({"substr": ["jsonlogic", 4]}, {}, "logic"),
+            ({"substr": ["jsonlogic", -5, 2]}, {}, "lo"),
+            ({"in": ["sub", "a substring"]}, {}, True),
+            ({"in": ["x", ["a", "b"]]}, {}, False),
+            ({"in": ["x", 5]}, {}, False),  # non-collection haystack
+            ({"merge": [[1, 2], 3, [4]]}, {}, [1, 2, 3, 4]),
+            # comparison edges
+            ({"!==": [1, "1"]}, {}, True),
+            ({"!==": [1, 1]}, {}, False),
+            ({"<=": [1, 1]}, {}, True),
+            ({"<=": [1, 2, 2]}, {}, True),
+            ({"<=": [3, 2]}, {}, False),
+            ({"substr": ["hello", 0, 2]}, {}, "he"),  # positive length branch
+            # iterators over non-lists short-circuit
+            ({"map": ["notlist", {"var": ""}]}, {}, []),
+            ({"filter": ["notlist", {"var": ""}]}, {}, []),
+            ({"some": ["notlist", {"var": ""}]}, {}, False),
+            ({"reduce": ["notlist", {"+": [1, 1]}, 5]}, {}, 5),
+            # var edges
+            ({"var": "items.1"}, {"items": ["a", "b"]}, "b"),  # list index
+            ({"var": ["items.9", "d"]}, {"items": ["a"]}, "d"),  # index out of range -> default
+            ({"missing": [["a", "b"]]}, {"a": 1}, ["b"]),  # single list argument
+            ({"missing_some": [1, "notlist"]}, {}, []),  # non-list keys
+        ],
+    )
+    def test_evaluates_rule(self, rule: Any, data: Any, expected: Any) -> None:
+        assert self.evaluator.apply(rule, data) == expected
+
+    def test_apply_without_data_defaults_to_empty(self) -> None:
+        assert self.evaluator.apply({"==": [1, 1]}) is True
+        assert self.evaluator.apply({"var": ["x", "fallback"]}) == "fallback"
+
+    def test_divide_by_zero_raises(self) -> None:
+        with pytest.raises(JsonLogicError):
+            self.evaluator.apply({"/": [1, 0]})
+
+    def test_modulo_by_zero_raises(self) -> None:
+        with pytest.raises(JsonLogicError):
+            self.evaluator.apply({"%": [1, 0]})
+
+    def test_map_filter_reduce(self) -> None:
+        data = {"nums": [1, 2, 3, 4]}
+        doubled = self.evaluator.apply({"map": [{"var": "nums"}, {"*": [{"var": ""}, 2]}]}, data)
+        assert doubled == [2, 4, 6, 8]
+        assert self.evaluator.apply(
+            {"filter": [{"var": "nums"}, {">": [{"var": ""}, 2]}]}, data
+        ) == [
+            3,
+            4,
+        ]
+        reduce_rule = {
+            "reduce": [{"var": "nums"}, {"+": [{"var": "current"}, {"var": "accumulator"}]}, 0]
+        }
+        assert self.evaluator.apply(reduce_rule, data) == 10
+
+    def test_all_some_none(self) -> None:
+        data = {"nums": [1, 2, 3]}
+        assert (
+            self.evaluator.apply({"all": [{"var": "nums"}, {">": [{"var": ""}, 0]}]}, data) is True
+        )
+        assert (
+            self.evaluator.apply({"some": [{"var": "nums"}, {">": [{"var": ""}, 2]}]}, data) is True
+        )
+        assert (
+            self.evaluator.apply({"none": [{"var": "nums"}, {">": [{"var": ""}, 5]}]}, data) is True
+        )
+        assert self.evaluator.apply({"all": [[], {"var": ""}]}, {}) is False
+
+    def test_unknown_operation_raises(self) -> None:
+        with pytest.raises(JsonLogicError):
+            self.evaluator.apply({"nope": [1]}, {})
+
+    def test_custom_operator_injection(self) -> None:
+        class DoubleOperator(SimpleOperator):
+            def compute(self, *values: Any) -> Any:
+                return values[0] * 2
+
+        registry = OperatorRegistry(StandardOperators.mapping()).extended_with(
+            {"double": DoubleOperator()}
+        )
+        assert JsonLogicEvaluator(registry).apply({"double": [21]}, {}) == 42
