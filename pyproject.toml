@@ -35,7 +35,7 @@ source_pkgs = ["fast_feature"]
 branch = true
 
 [tool.coverage.report]
-fail_under = 90
+fail_under = 95
 show_missing = true
 exclude_also = [
     "if TYPE_CHECKING:",
