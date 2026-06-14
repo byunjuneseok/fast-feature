@@ -12,6 +12,7 @@ fast-feature-testing = { workspace = true }
 fast-feature-storage-inmemory = { workspace = true }
 fast-feature-storage-sqlalchemy = { workspace = true }
 fast-feature-storage-postgresql = { workspace = true }
+fast-feature-admin = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -33,6 +34,7 @@ dev = [
     "fast-feature-storage-inmemory",
     "fast-feature-storage-sqlalchemy",
     "fast-feature-storage-postgresql",
+    "fast-feature-admin",
 ]
 
 [tool.pytest.ini_options]
@@ -45,6 +47,7 @@ testpaths = [
     "packages/fast-feature-storage-inmemory/tests",
     "packages/fast-feature-storage-sqlalchemy/tests",
     "packages/fast-feature-storage-postgresql/tests",
+    "packages/fast-feature-admin/tests",
 ]
 
 [tool.coverage.run]
@@ -73,6 +76,7 @@ src = [
     "packages/fast-feature-storage-inmemory/src",
     "packages/fast-feature-storage-sqlalchemy/src",
     "packages/fast-feature-storage-postgresql/src",
+    "packages/fast-feature-admin/src",
 ]
 
 [tool.ruff.lint]
@@ -94,6 +98,7 @@ mypy_path = [
     "packages/fast-feature-storage-inmemory/src",
     "packages/fast-feature-storage-sqlalchemy/src",
     "packages/fast-feature-storage-postgresql/src",
+    "packages/fast-feature-admin/src",
 ]
 files = [
     "packages/fast-feature-core/src",
@@ -109,6 +114,8 @@ files = [
     "packages/fast-feature-storage-inmemory/tests",
     "packages/fast-feature-storage-sqlalchemy/tests",
     "packages/fast-feature-storage-postgresql/tests",
+    "packages/fast-feature-admin/src",
+    "packages/fast-feature-admin/tests",
 ]
 
 [[tool.mypy.overrides]]

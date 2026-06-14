@@ -1,0 +1,38 @@
+[project]
+name = "fast-feature-admin"
+version = "0.1.0"
+description = "Admin JSON API and server-rendered web console for fast-feature."
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "byunjuneseok", email = "byunjuneseok@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: FastAPI",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fast-feature-core",
+    "fastapi>=0.110",
+    "pydantic>=2.6",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.17,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "fast_feature.admin"
+
+[tool.uv.sources]
+fast-feature-core = { workspace = true }
