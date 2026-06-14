@@ -4,25 +4,31 @@ from fast_feature.core.evaluation import ErrorCode, EvaluationOutcome, Reason
 from fast_feature.core.flag import Flag, FlagState
 from fast_feature.core.types import EvaluationContext, JsonValue
 
-from .jsonlogic import JsonLogic, JsonLogicError
-from .operators import TARGETING_LAZY_OPS, TARGETING_SIMPLE_OPS
+from .errors import JsonLogicError
+from .evaluator import JsonLogicEvaluator
+from .hashing import Hasher, Murmur3Hasher
+from .operators import StandardOperators, TargetingOperators
+from .registry import OperatorRegistry
 
 
 class TargetingEngine:
     """Resolves a flag against a context using the following evaluation semantics.
 
-    - ``DISABLED`` flag                  → reason ``DISABLED``
-    - no targeting rule                  → reason ``STATIC``
-    - targeting returns a known variant  → reason ``TARGETING_MATCH``
-    - targeting returns ``null``         → reason ``DEFAULT``
-    - targeting errors / unknown variant → reason ``ERROR`` (``PARSE_ERROR``)
+    - ``DISABLED`` flag                  -> reason ``DISABLED``
+    - no targeting rule                  -> reason ``STATIC``
+    - targeting returns a known variant  -> reason ``TARGETING_MATCH``
+    - targeting returns ``null``         -> reason ``DEFAULT``
+    - targeting errors / unknown variant -> reason ``ERROR`` (``PARSE_ERROR``)
 
     In every non-match case the flag's default variant value is returned, so a
     caller always receives a usable value.
     """
 
-    def __init__(self) -> None:
-        self._jsonlogic = JsonLogic(simple_ops=TARGETING_SIMPLE_OPS, lazy_ops=TARGETING_LAZY_OPS)
+    def __init__(self, hasher: Hasher | None = None) -> None:
+        registry = OperatorRegistry(StandardOperators.mapping()).extended_with(
+            TargetingOperators.mapping(hasher or Murmur3Hasher())
+        )
+        self._evaluator = JsonLogicEvaluator(registry)
 
     def evaluate(self, flag: Flag, context: EvaluationContext | None = None) -> EvaluationOutcome:
         if flag.state is FlagState.DISABLED:
@@ -32,7 +38,7 @@ class TargetingEngine:
             return self._resolved(flag, flag.default_variant, Reason.STATIC)
 
         try:
-            result = self._jsonlogic.apply(flag.targeting, self._build_data(flag, context))
+            result = self._evaluator.apply(flag.targeting, self._build_data(flag, context))
         except JsonLogicError as exc:
             return self._errored(flag, str(exc))
 

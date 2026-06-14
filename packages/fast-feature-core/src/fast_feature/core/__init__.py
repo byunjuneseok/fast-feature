@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .errors import (
-    FastFeatureError,
+    CoreError,
     FlagAlreadyExistsError,
     FlagNotFoundError,
     InvalidFlagError,
@@ -20,7 +20,7 @@ __all__ = [
     "EvaluationOutcome",
     "Reason",
     "ErrorCode",
-    "FastFeatureError",
+    "CoreError",
     "FlagNotFoundError",
     "FlagAlreadyExistsError",
     "InvalidFlagError",

@@ -4,9 +4,15 @@ from typing import Any
 
 import pytest
 
-from fast_feature.engine.jsonlogic import JsonLogic, JsonLogicError
+from fast_feature.engine import (
+    JsonLogicEvaluator,
+    OperatorRegistry,
+    SimpleOperator,
+    StandardOperators,
+)
+from fast_feature.engine.errors import JsonLogicError
 
-jl = JsonLogic()
+evaluator = JsonLogicEvaluator(OperatorRegistry(StandardOperators.mapping()))
 
 
 @pytest.mark.parametrize(
@@ -61,32 +67,43 @@ jl = JsonLogic()
     ],
 )
 def test_evaluates_rule(rule: Any, data: Any, expected: Any) -> None:
-    assert jl.apply(rule, data) == expected
+    assert evaluator.apply(rule, data) == expected
 
 
 def test_map_filter_reduce() -> None:
     data = {"nums": [1, 2, 3, 4]}
-    assert jl.apply({"map": [{"var": "nums"}, {"*": [{"var": ""}, 2]}]}, data) == [2, 4, 6, 8]
-    assert jl.apply({"filter": [{"var": "nums"}, {">": [{"var": ""}, 2]}]}, data) == [3, 4]
+    assert evaluator.apply({"map": [{"var": "nums"}, {"*": [{"var": ""}, 2]}]}, data) == [
+        2,
+        4,
+        6,
+        8,
+    ]
+    assert evaluator.apply({"filter": [{"var": "nums"}, {">": [{"var": ""}, 2]}]}, data) == [3, 4]
     reduce_rule = {
         "reduce": [{"var": "nums"}, {"+": [{"var": "current"}, {"var": "accumulator"}]}, 0]
     }
-    assert jl.apply(reduce_rule, data) == 10
+    assert evaluator.apply(reduce_rule, data) == 10
 
 
 def test_all_some_none() -> None:
     data = {"nums": [1, 2, 3]}
-    assert jl.apply({"all": [{"var": "nums"}, {">": [{"var": ""}, 0]}]}, data) is True
-    assert jl.apply({"some": [{"var": "nums"}, {">": [{"var": ""}, 2]}]}, data) is True
-    assert jl.apply({"none": [{"var": "nums"}, {">": [{"var": ""}, 5]}]}, data) is True
-    assert jl.apply({"all": [[], {"var": ""}]}, {}) is False
+    assert evaluator.apply({"all": [{"var": "nums"}, {">": [{"var": ""}, 0]}]}, data) is True
+    assert evaluator.apply({"some": [{"var": "nums"}, {">": [{"var": ""}, 2]}]}, data) is True
+    assert evaluator.apply({"none": [{"var": "nums"}, {">": [{"var": ""}, 5]}]}, data) is True
+    assert evaluator.apply({"all": [[], {"var": ""}]}, {}) is False
 
 
 def test_unknown_operation_raises() -> None:
     with pytest.raises(JsonLogicError):
-        jl.apply({"nope": [1]}, {})
+        evaluator.apply({"nope": [1]}, {})
 
 
 def test_custom_operator_injection() -> None:
-    engine = JsonLogic(simple_ops={"double": lambda x: x * 2})
-    assert engine.apply({"double": [21]}, {}) == 42
+    class DoubleOperator(SimpleOperator):
+        def compute(self, *values: Any) -> Any:
+            return values[0] * 2
+
+    registry = OperatorRegistry(StandardOperators.mapping()).extended_with(
+        {"double": DoubleOperator()}
+    )
+    assert JsonLogicEvaluator(registry).apply({"double": [21]}, {}) == 42
