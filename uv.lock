@@ -466,7 +466,7 @@ wheels = [
 
 [[package]]
 name = "fast-feature"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -510,7 +510,7 @@ provides-extras = ["postgresql", "admin", "standalone", "all"]
 
 [[package]]
 name = "fast-feature-admin"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-admin" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -531,12 +531,12 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-core"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-core" }
 
 [[package]]
 name = "fast-feature-engine"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-engine" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -551,7 +551,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-ofrep"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-ofrep" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -570,7 +570,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-storage-inmemory"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-storage-inmemory" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -581,7 +581,7 @@ requires-dist = [{ name = "fast-feature-core", editable = "packages/fast-feature
 
 [[package]]
 name = "fast-feature-storage-postgresql"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-storage-postgresql" }
 dependencies = [
     { name = "asyncpg" },
@@ -596,7 +596,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-storage-sqlalchemy"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-storage-sqlalchemy" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -611,7 +611,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-testing"
-version = "0.1.0"
+version = "0.0.1"
 source = { editable = "packages/fast-feature-testing" }
 dependencies = [
     { name = "fast-feature-core" },

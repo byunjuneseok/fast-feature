@@ -1,6 +1,6 @@
 [project]
 name = "fast-feature-testing"
-version = "0.1.0"
+version = "0.0.1"
 description = "Reusable pytest contract for fast-feature FlagRepository implementations."
 license = "Apache-2.0"
 requires-python = ">=3.10"
@@ -19,7 +19,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "fast-feature-core",
+    "fast-feature-core==0.0.1",
     "pytest>=8.0",
 ]
 

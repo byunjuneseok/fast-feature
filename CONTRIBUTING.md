@@ -103,6 +103,11 @@ New storage backends should validate against the reusable
 - Keep the domain (`fast-feature-core`) free of infrastructure: no FastAPI,
   SQLAlchemy, or Pydantic leaking in.
 
+## Releases
+
+All distributions are versioned and published in lockstep via a tag-triggered
+workflow with PyPI Trusted Publishing. See [RELEASING.md](./RELEASING.md).
+
 ## License
 
 By contributing, you agree that your contributions are licensed under the

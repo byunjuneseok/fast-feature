@@ -1,6 +1,6 @@
 [project]
 name = "fast-feature"
-version = "0.1.0"
+version = "0.0.1"
 description = "A lightweight, async, OpenFeature-compatible (OFREP) feature flag server."
 readme = "README.md"
 license = "Apache-2.0"
@@ -23,20 +23,20 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "fast-feature-core",
-    "fast-feature-engine",
-    "fast-feature-ofrep",
-    "fast-feature-storage-inmemory",
+    "fast-feature-core==0.0.1",
+    "fast-feature-engine==0.0.1",
+    "fast-feature-ofrep==0.0.1",
+    "fast-feature-storage-inmemory==0.0.1",
     "pydantic-settings>=2.0",
 ]
 
 [project.optional-dependencies]
-postgresql = ["fast-feature-storage-postgresql"]
-admin = ["fast-feature-admin"]
+postgresql = ["fast-feature-storage-postgresql==0.0.1"]
+admin = ["fast-feature-admin==0.0.1"]
 standalone = ["uvicorn[standard]>=0.27"]
 all = [
-    "fast-feature-storage-postgresql",
-    "fast-feature-admin",
+    "fast-feature-storage-postgresql==0.0.1",
+    "fast-feature-admin==0.0.1",
     "uvicorn[standard]>=0.27",
 ]
 
