@@ -64,11 +64,41 @@ class TestJsonLogicEvaluator:
             ({"substr": ["jsonlogic", -5, 2]}, {}, "lo"),
             ({"in": ["sub", "a substring"]}, {}, True),
             ({"in": ["x", ["a", "b"]]}, {}, False),
+            ({"in": ["x", 5]}, {}, False),  # non-collection haystack
             ({"merge": [[1, 2], 3, [4]]}, {}, [1, 2, 3, 4]),
+            # comparison edges
+            ({"!==": [1, "1"]}, {}, True),
+            ({"!==": [1, 1]}, {}, False),
+            ({"<=": [1, 1]}, {}, True),
+            ({"<=": [1, 2, 2]}, {}, True),
+            ({"<=": [3, 2]}, {}, False),
+            ({"substr": ["hello", 0, 2]}, {}, "he"),  # positive length branch
+            # iterators over non-lists short-circuit
+            ({"map": ["notlist", {"var": ""}]}, {}, []),
+            ({"filter": ["notlist", {"var": ""}]}, {}, []),
+            ({"some": ["notlist", {"var": ""}]}, {}, False),
+            ({"reduce": ["notlist", {"+": [1, 1]}, 5]}, {}, 5),
+            # var edges
+            ({"var": "items.1"}, {"items": ["a", "b"]}, "b"),  # list index
+            ({"var": ["items.9", "d"]}, {"items": ["a"]}, "d"),  # index out of range -> default
+            ({"missing": [["a", "b"]]}, {"a": 1}, ["b"]),  # single list argument
+            ({"missing_some": [1, "notlist"]}, {}, []),  # non-list keys
         ],
     )
     def test_evaluates_rule(self, rule: Any, data: Any, expected: Any) -> None:
         assert self.evaluator.apply(rule, data) == expected
+
+    def test_apply_without_data_defaults_to_empty(self) -> None:
+        assert self.evaluator.apply({"==": [1, 1]}) is True
+        assert self.evaluator.apply({"var": ["x", "fallback"]}) == "fallback"
+
+    def test_divide_by_zero_raises(self) -> None:
+        with pytest.raises(JsonLogicError):
+            self.evaluator.apply({"/": [1, 0]})
+
+    def test_modulo_by_zero_raises(self) -> None:
+        with pytest.raises(JsonLogicError):
+            self.evaluator.apply({"%": [1, 0]})
 
     def test_map_filter_reduce(self) -> None:
         data = {"nums": [1, 2, 3, 4]}

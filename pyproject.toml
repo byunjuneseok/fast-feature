@@ -16,6 +16,7 @@ dev = [
     "aiosqlite>=0.20",
     "ruff>=0.5",
     "mypy>=1.10",
+    "pytest-cov>=5.0",
     # Workspace members, installed editable for local dev and tooling.
     "fast-feature-core",
     "fast-feature-engine",
@@ -23,9 +24,24 @@ dev = [
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+addopts = "--cov --cov-report=term-missing"
 testpaths = [
     "packages/fast-feature-core/tests",
     "packages/fast-feature-engine/tests",
+]
+
+[tool.coverage.run]
+source_pkgs = ["fast_feature"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@(abc\\.)?abstractmethod",
+    "\\.\\.\\.",
 ]
 
 [tool.ruff]
