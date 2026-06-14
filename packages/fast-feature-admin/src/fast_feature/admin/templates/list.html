@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+  <p><a class="button" href="{{ request.url_for('admin:new') }}">New flag</a></p>
+  {% if not flags %}
+    <p>No flags yet.</p>
+  {% else %}
+    <table>
+      <thead>
+        <tr><th>Key</th><th>State</th><th>Default</th><th>Variants</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for flag in flags %}
+          <tr>
+            <td>{{ flag.key }}</td>
+            <td>{{ flag.state.value }}</td>
+            <td>{{ flag.default_variant }}</td>
+            <td>{{ flag.variants | length }}</td>
+            <td>
+              <form class="inline" method="post"
+                    action="{{ request.url_for('admin:toggle', key=flag.key) }}">
+                <input type="hidden" name="enabled"
+                       value="{{ 'false' if flag.state.value == 'ENABLED' else 'true' }}" />
+                <button type="submit">
+                  {{ 'Disable' if flag.state.value == 'ENABLED' else 'Enable' }}
+                </button>
+              </form>
+              <a href="{{ request.url_for('admin:edit', key=flag.key) }}">Edit</a>
+              <form class="inline" method="post"
+                    action="{{ request.url_for('admin:delete', key=flag.key) }}">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

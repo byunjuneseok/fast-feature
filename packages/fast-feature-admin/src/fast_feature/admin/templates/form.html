@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+  <p><a href="{{ request.url_for('admin:list') }}">&larr; Back</a></p>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <form method="post"
+        action="{{ request.url_for('admin:create') if flag is none
+                   else request.url_for('admin:update', key=flag.key) }}">
+    {% if flag is none %}
+      <label>Key <input name="key" required /></label>
+    {% else %}
+      <p><strong>Key:</strong> {{ flag.key }}</p>
+    {% endif %}
+    <label>Default variant
+      <input name="default_variant" value="{{ flag.default_variant if flag else '' }}" required />
+    </label>
+    <label>State
+      <select name="state">
+        <option value="ENABLED"
+          {{ 'selected' if not flag or flag.state.value == 'ENABLED' else '' }}>ENABLED</option>
+        <option value="DISABLED"
+          {{ 'selected' if flag and flag.state.value == 'DISABLED' else '' }}>DISABLED</option>
+      </select>
+    </label>
+    <label>Variants (JSON)<textarea name="variants" required>{{ variants_json }}</textarea></label>
+    <label>Targeting (JSON, optional)<textarea name="targeting">{{ targeting_json }}</textarea></label>
+    <label>Metadata (JSON, optional)<textarea name="metadata">{{ metadata_json }}</textarea></label>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}
