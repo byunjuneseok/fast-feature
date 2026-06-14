@@ -8,6 +8,10 @@ members = ["packages/*"]
 fast-feature-core = { workspace = true }
 fast-feature-engine = { workspace = true }
 fast-feature-ofrep = { workspace = true }
+fast-feature-testing = { workspace = true }
+fast-feature-storage-inmemory = { workspace = true }
+fast-feature-storage-sqlalchemy = { workspace = true }
+fast-feature-storage-postgresql = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -25,6 +29,10 @@ dev = [
     "fast-feature-core",
     "fast-feature-engine",
     "fast-feature-ofrep",
+    "fast-feature-testing",
+    "fast-feature-storage-inmemory",
+    "fast-feature-storage-sqlalchemy",
+    "fast-feature-storage-postgresql",
 ]
 
 [tool.pytest.ini_options]
@@ -34,11 +42,15 @@ testpaths = [
     "packages/fast-feature-core/tests",
     "packages/fast-feature-engine/tests",
     "packages/fast-feature-ofrep/tests",
+    "packages/fast-feature-storage-inmemory/tests",
+    "packages/fast-feature-storage-sqlalchemy/tests",
+    "packages/fast-feature-storage-postgresql/tests",
 ]
 
 [tool.coverage.run]
 source_pkgs = ["fast_feature"]
 branch = true
+omit = ["*/fast_feature/testing/*"]
 
 [tool.coverage.report]
 fail_under = 95
@@ -57,6 +69,10 @@ src = [
     "packages/fast-feature-core/src",
     "packages/fast-feature-engine/src",
     "packages/fast-feature-ofrep/src",
+    "packages/fast-feature-testing/src",
+    "packages/fast-feature-storage-inmemory/src",
+    "packages/fast-feature-storage-sqlalchemy/src",
+    "packages/fast-feature-storage-postgresql/src",
 ]
 
 [tool.ruff.lint]
@@ -74,14 +90,25 @@ mypy_path = [
     "packages/fast-feature-core/src",
     "packages/fast-feature-engine/src",
     "packages/fast-feature-ofrep/src",
+    "packages/fast-feature-testing/src",
+    "packages/fast-feature-storage-inmemory/src",
+    "packages/fast-feature-storage-sqlalchemy/src",
+    "packages/fast-feature-storage-postgresql/src",
 ]
 files = [
     "packages/fast-feature-core/src",
     "packages/fast-feature-engine/src",
     "packages/fast-feature-ofrep/src",
+    "packages/fast-feature-testing/src",
+    "packages/fast-feature-storage-inmemory/src",
+    "packages/fast-feature-storage-sqlalchemy/src",
+    "packages/fast-feature-storage-postgresql/src",
     "packages/fast-feature-core/tests",
     "packages/fast-feature-engine/tests",
     "packages/fast-feature-ofrep/tests",
+    "packages/fast-feature-storage-inmemory/tests",
+    "packages/fast-feature-storage-sqlalchemy/tests",
+    "packages/fast-feature-storage-postgresql/tests",
 ]
 
 [[tool.mypy.overrides]]

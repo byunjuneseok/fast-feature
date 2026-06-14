@@ -1,0 +1,34 @@
+[project]
+name = "fast-feature-testing"
+version = "0.1.0"
+description = "Reusable pytest contract for fast-feature FlagRepository implementations."
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "byunjuneseok", email = "byunjuneseok@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fast-feature-core",
+    "pytest>=8.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.17,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "fast_feature.testing"
+
+[tool.uv.sources]
+fast-feature-core = { workspace = true }
