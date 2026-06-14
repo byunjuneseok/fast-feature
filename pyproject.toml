@@ -7,6 +7,7 @@ members = ["packages/*"]
 [tool.uv.sources]
 fast-feature-core = { workspace = true }
 fast-feature-engine = { workspace = true }
+fast-feature-ofrep = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -20,6 +21,7 @@ dev = [
     # Workspace members, installed editable for local dev and tooling.
     "fast-feature-core",
     "fast-feature-engine",
+    "fast-feature-ofrep",
 ]
 
 [tool.pytest.ini_options]
@@ -28,6 +30,7 @@ addopts = "--cov --cov-report=term-missing"
 testpaths = [
     "packages/fast-feature-core/tests",
     "packages/fast-feature-engine/tests",
+    "packages/fast-feature-ofrep/tests",
 ]
 
 [tool.coverage.run]
@@ -50,6 +53,7 @@ target-version = "py310"
 src = [
     "packages/fast-feature-core/src",
     "packages/fast-feature-engine/src",
+    "packages/fast-feature-ofrep/src",
 ]
 
 [tool.ruff.lint]
@@ -66,12 +70,15 @@ explicit_package_bases = true
 mypy_path = [
     "packages/fast-feature-core/src",
     "packages/fast-feature-engine/src",
+    "packages/fast-feature-ofrep/src",
 ]
 files = [
     "packages/fast-feature-core/src",
     "packages/fast-feature-engine/src",
+    "packages/fast-feature-ofrep/src",
     "packages/fast-feature-core/tests",
     "packages/fast-feature-engine/tests",
+    "packages/fast-feature-ofrep/tests",
 ]
 
 [[tool.mypy.overrides]]
