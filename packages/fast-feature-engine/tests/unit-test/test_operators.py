@@ -72,7 +72,7 @@ class TestTargetingOperators:
             counts[
                 self.evaluator.apply(self._fractional_rule(), {"targetingKey": f"user-{i}"})
             ] += 1
-        # 50/50 split — both buckets should land near half, within a loose margin.
+        # 50/50 split, both buckets should land near half, within a loose margin.
         assert abs(counts["on"] - counts["off"]) < 600
 
     def test_fractional_respects_uneven_weights(self) -> None:

@@ -20,7 +20,7 @@ main ──●──────────────●───────
 4. Once CI is green (and conversations are resolved), **squash-merge**.
 5. The branch is deleted automatically on merge.
 
-Keep branches short-lived — rebase onto `main` rather than letting them drift.
+Keep branches short-lived: rebase onto `main` rather than letting them drift.
 
 ### Branch naming
 
@@ -47,7 +47,7 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 Types mirror the branch prefixes (`feat`, `fix`, `refactor`, `test`, `docs`,
 `chore`). Scope is usually the package, e.g. `feat(engine):`, `fix(ofrep):`.
-Write commits that are atomic — one logical change each.
+Write commits that are atomic, one logical change each.
 
 ## Pull requests
 
@@ -55,7 +55,7 @@ Write commits that are atomic — one logical change each.
 - Keep PRs scoped to one concern; split unrelated changes.
 - Fill out the PR template.
 - CI must pass on every supported Python version (3.10–3.13).
-- `main` is squash-merged only — your PR becomes one commit, so a clear PR title
+- `main` is squash-merged only, so your PR becomes one commit and a clear PR title
   matters more than a tidy intra-branch history.
 
 ### `main` protection
@@ -80,7 +80,7 @@ uv run mypy
 uv run pytest
 ```
 
-Tests need no live database — the SQLAlchemy backend runs on `aiosqlite`, and the
+Tests need no live database. The SQLAlchemy backend runs on `aiosqlite`, and the
 OFREP/admin layers run against in-memory repositories over an ASGI transport.
 
 ### Where code and tests live
@@ -100,7 +100,7 @@ New storage backends should validate against the reusable
   module-level functions.
 - Each module defines a Base exception; translate and chain to your own Base at
   boundaries.
-- Keep the domain (`fast-feature-core`) free of infrastructure — no FastAPI,
+- Keep the domain (`fast-feature-core`) free of infrastructure: no FastAPI,
   SQLAlchemy, or Pydantic leaking in.
 
 ## License

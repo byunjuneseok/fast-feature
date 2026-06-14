@@ -10,7 +10,7 @@ class FlagRepository(ABC):
 
     Implementations live behind optional extras (``inmemory``, ``postgresql``,
     ``mysql``). The domain and the evaluation engine depend only on this
-    interface — never on a concrete storage technology.
+    interface, never on a concrete storage technology.
     """
 
     @abstractmethod

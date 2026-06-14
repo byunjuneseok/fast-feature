@@ -17,7 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Typing :: Typed",
 ]
-# Pure-Python domain model — no runtime dependencies.
+# Pure-Python domain model with no runtime dependencies.
 dependencies = []
 
 [build-system]

@@ -26,7 +26,7 @@ _TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "templates"
 
 
 class AdminRouter:
-    """Builds a pluggable admin ``APIRouter`` — JSON CRUD under ``/api/flags``
+    """Builds a pluggable admin ``APIRouter``: JSON CRUD under ``/api/flags``
     plus an optional server-rendered console under ``/``.
 
         app.include_router(AdminRouter.build(repository), prefix="/admin")
