@@ -32,7 +32,7 @@ FIRST_PARTY = (
     "fast-feature",
 )
 
-_VERSION_RE = re.compile(r'^(?P<spec>\d+\.\d+\.\d+(?:[.\-+][0-9A-Za-z.\-+]+)?)$')
+_VERSION_RE = re.compile(r"^(?P<spec>\d+\.\d+\.\d+(?:[.\-+][0-9A-Za-z.\-+]+)?)$")
 _PROJECT_VERSION_RE = re.compile(r'^version = "[^"]*"$', re.MULTILINE)
 
 
