@@ -1,6 +1,6 @@
 [project]
 name = "fast-feature-storage-postgresql"
-version = "0.0.1"
+version = "0.0.2"
 description = "PostgreSQL storage backend for fast-feature (asyncpg)."
 license = "Apache-2.0"
 requires-python = ">=3.10"
@@ -19,7 +19,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "fast-feature-storage-sqlalchemy==0.0.1",
+    "fast-feature-storage-sqlalchemy==0.0.2",
     "asyncpg>=0.29",
 ]
 

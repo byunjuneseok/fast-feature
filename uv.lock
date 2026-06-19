@@ -466,7 +466,7 @@ wheels = [
 
 [[package]]
 name = "fast-feature"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -483,10 +483,14 @@ admin = [
 all = [
     { name = "fast-feature-admin" },
     { name = "fast-feature-storage-postgresql" },
+    { name = "fast-feature-storage-sqlalchemy" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 postgresql = [
     { name = "fast-feature-storage-postgresql" },
+]
+sqlalchemy = [
+    { name = "fast-feature-storage-sqlalchemy" },
 ]
 standalone = [
     { name = "uvicorn", extra = ["standard"] },
@@ -502,15 +506,17 @@ requires-dist = [
     { name = "fast-feature-storage-inmemory", editable = "packages/fast-feature-storage-inmemory" },
     { name = "fast-feature-storage-postgresql", marker = "extra == 'all'", editable = "packages/fast-feature-storage-postgresql" },
     { name = "fast-feature-storage-postgresql", marker = "extra == 'postgresql'", editable = "packages/fast-feature-storage-postgresql" },
+    { name = "fast-feature-storage-sqlalchemy", marker = "extra == 'all'", editable = "packages/fast-feature-storage-sqlalchemy" },
+    { name = "fast-feature-storage-sqlalchemy", marker = "extra == 'sqlalchemy'", editable = "packages/fast-feature-storage-sqlalchemy" },
     { name = "pydantic-settings", specifier = ">=2.0" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'all'", specifier = ">=0.27" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'standalone'", specifier = ">=0.27" },
 ]
-provides-extras = ["postgresql", "admin", "standalone", "all"]
+provides-extras = ["sqlalchemy", "postgresql", "admin", "standalone", "all"]
 
 [[package]]
 name = "fast-feature-admin"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-admin" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -531,12 +537,12 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-core"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-core" }
 
 [[package]]
 name = "fast-feature-engine"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-engine" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -551,7 +557,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-ofrep"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-ofrep" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -570,7 +576,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-storage-inmemory"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-storage-inmemory" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -581,7 +587,7 @@ requires-dist = [{ name = "fast-feature-core", editable = "packages/fast-feature
 
 [[package]]
 name = "fast-feature-storage-postgresql"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-storage-postgresql" }
 dependencies = [
     { name = "asyncpg" },
@@ -596,7 +602,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-storage-sqlalchemy"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-storage-sqlalchemy" }
 dependencies = [
     { name = "fast-feature-core" },
@@ -611,7 +617,7 @@ requires-dist = [
 
 [[package]]
 name = "fast-feature-testing"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "packages/fast-feature-testing" }
 dependencies = [
     { name = "fast-feature-core" },

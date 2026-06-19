@@ -1,6 +1,6 @@
 [project]
 name = "fast-feature-storage-sqlalchemy"
-version = "0.0.1"
+version = "0.0.2"
 description = "Async SQLAlchemy storage backend for fast-feature (shared by the SQL drivers)."
 license = "Apache-2.0"
 requires-python = ">=3.10"
@@ -19,7 +19,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "fast-feature-core==0.0.1",
+    "fast-feature-core==0.0.2",
     "sqlalchemy[asyncio]>=2.0",
 ]
 
