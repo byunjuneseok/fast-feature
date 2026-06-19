@@ -58,25 +58,33 @@ into your own FastAPI app.
 
 ## Installation
 
-The umbrella `fast-feature` package pulls in the core, engine, OFREP layer, and
+Install the umbrella `fast-feature` package and pick the backend and features you
+need with extras. The base package includes the core, engine, OFREP layer, and
 the in-memory backend:
 
 ```bash
 pip install fast-feature                 # core + engine + ofrep + in-memory
-pip install "fast-feature[standalone]"   # + uvicorn (run the CLI server)
-pip install "fast-feature[postgresql]"   # + PostgreSQL backend
+pip install "fast-feature[sqlalchemy]"   # + SQL backend (bring your own async engine)
+pip install "fast-feature[postgresql]"   # + PostgreSQL backend (asyncpg)
 pip install "fast-feature[admin]"        # + admin API & web console
+pip install "fast-feature[standalone]"   # + uvicorn (run the CLI server)
 pip install "fast-feature[all]"          # everything above
 ```
 
-Because every distribution is published separately, you can also depend on just
-the pieces you need. For example, only the evaluation engine, with no web
-framework:
+Extras compose, so ask for exactly what you embed:
 
 ```bash
-pip install fast-feature-engine          # core + engine only
-pip install fast-feature-storage-sqlalchemy aiosqlite   # SQL backend on SQLite
+pip install "fast-feature[sqlalchemy,admin]"   # SQL backend + admin, no server
 ```
+
+> **Advanced: individual distributions.** Every layer is also published as its own
+> distribution, so you can depend on a single piece without the umbrella. The one
+> thing extras can't express is "engine without the base batteries", since the
+> umbrella always ships the OFREP layer and the in-memory backend:
+>
+> ```bash
+> pip install fast-feature-engine          # core + engine only, no web framework
+> ```
 
 ## Quickstart
 
@@ -152,12 +160,13 @@ repository = InMemoryFlagRepository(flags=[...])   # flags is optional
 
 ### SQLAlchemy (any async driver)
 
-`fast-feature-storage-sqlalchemy` works with any SQLAlchemy async driver. Provide
-an `async_sessionmaker`. `Schema.create_all` is a convenience for dev and tests;
-manage the `feature_flags` table with migrations in production.
+The `[sqlalchemy]` extra works with any SQLAlchemy async driver. Provide an
+`async_sessionmaker` and the host app keeps full ownership of the engine and
+connection pool. `Schema.create_all` is a convenience for dev and tests; manage
+the `feature_flags` table with migrations in production.
 
 ```bash
-pip install fast-feature-storage-sqlalchemy aiosqlite
+pip install "fast-feature[sqlalchemy]" aiosqlite
 ```
 
 ```python
@@ -173,11 +182,11 @@ repository = SqlAlchemyFlagRepository(session_factory)
 
 ### PostgreSQL
 
-`fast-feature-storage-postgresql` wraps the SQLAlchemy backend with an asyncpg
-engine. `from_dsn` normalizes a plain `postgresql://` DSN to `postgresql+asyncpg://`.
+The `[postgresql]` extra wraps the SQLAlchemy backend with an asyncpg engine.
+`from_dsn` normalizes a plain `postgresql://` DSN to `postgresql+asyncpg://`.
 
 ```bash
-pip install fast-feature-storage-postgresql      # or: fast-feature[postgresql]
+pip install "fast-feature[postgresql]"
 ```
 
 ```python

@@ -1,6 +1,6 @@
 [project]
 name = "fast-feature-admin"
-version = "0.0.1"
+version = "0.0.2"
 description = "Admin JSON API and server-rendered web console for fast-feature."
 license = "Apache-2.0"
 requires-python = ">=3.10"
@@ -20,7 +20,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "fast-feature-core==0.0.1",
+    "fast-feature-core==0.0.2",
     "fastapi>=0.110",
     "pydantic>=2.6",
     "jinja2>=3.1",
